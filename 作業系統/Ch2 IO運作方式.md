@@ -10,7 +10,7 @@ Interrupt介紹、Hardware Resouce Protection
    - Interrupt之處理
    - 種類
 - Hardware Resource Protection
-   - 基礎
+   - 基礎建設
       - Dual modes運作
       - privileged instructions
       
@@ -72,7 +72,10 @@ Interrupt介紹、Hardware Resouce Protection
       **故必須有一個硬體協調設計機制，此技術叫做"interleaving"或cycle stealing。**
    - 有時CPU會被迫等待DMA when it make use of memory bus。當與CPU conflict時，通常給DMA高優先權。
       理由：DMA對Memory、Bus之使用頻率低於CPU很多，優先配給DMA會有比較小的平均Waiting Time及較高之產出（Throughput）。
-### Interrupt介紹
+## Interrupt介紹
+
+### Interrupt之處理
+
 1. kernel所在的memory area中，會存有一個"Interrupt vector"（表），內放各式interrupt ID及各式ISRs之位址，此外也會存放這一些ISRs之Binary Code。
 
 ![image-20210711125733163](./Imgaes/image-20210711125733163.png)
@@ -119,3 +122,123 @@ Interrupt介紹、Hardware Resouce Protection
       **e.g. 重大error引起之中斷（internal中斷）**
    2. Maskable interrupt：此類中斷發生，可以ignore it或delay processing。
       **e.g. Software interrupt**
+
+## Blocking-I/O、Non-Blocking I/O、Asychronous-I/O
+
+1. Blocking-I/O：Process suspended until I/O-completed.
+
+   - Easy to understand and use.
+   - Insufficient（不足） for some needs**（e.g. Play video程式）**.
+
+2. Non-Blocking I/O：Process still runs when I/O operation.
+
+   - I/O calls returns **as much as possible（有多少給多少）**.
+   - e.g. **user-Interface**、**data copy（buffer I/O）**.
+   - Implemented via multi-threading.
+
+3. Asynchronous I/O：Process runs while I/O executes difficult to use.
+
+   - 與Non-Blocking I/O相似
+
+     差別：I/O subsystem singels process when **I/O-completed（整個I/O完成才通知Process）**
+
+圖示：
+
+![image-20210714191051586](./Imgaes/image-20210714191051586-6261054-6261065.png)
+
+
+
+## Hardware Resource Protection
+
+### 基礎建設
+
+#### Dual Modes operation
+
+1. **Def**：系統的運作模式至少要可以被區分出兩種Modes
+
+   1. **kernel mode**：又叫**System** or **Privileged** or **Supervisor mode**（更早期叫做monitor mode［恐］）。代表kernel取得對系統的控制權（即kernel取得CPU，在執行一些Systemprocess e.g. ISR、System call、etc.）
+
+      > 在此mode下可以執行特權指令
+
+   2. **user mode**：代表user process取得CPU在執行之mode，在此mode下，**不允許**執行特權指令。此外，Dual mode之實現需要Hardware額外支援。（e.g. CPU提供一個**Mode Bit**，用以區分目前是何種mode。）
+
+   > Note：可以比兩種更多
+   >
+   > e.g. 
+   >
+   > - user mode
+   >   - virtual user mode
+   >   - virtual kernel mode
+   > - kernel mode
+
+#### Privileged Instruction（特權指令）
+
+1. **Def**：任何可能造成系統重大危害之指令，均可定義為特權指令。
+
+   > 只允許在kernel mode下執行，不允許在user mode下執行。
+
+2. **一般而言**，下列指令為特權指令：
+
+   - I/O instruction（for I/O protection）
+   - Base/Limit register值修改（for Memory protection）
+   - Timer值修改指令（for CPU protection）
+   - Turn off（or Disable） interrupt
+   - Switch（change） mode to kernel mode指令
+   - Clear memory
+
+   > 例［恐］［EX］ 要設置特權的指令？
+   >
+   > 1. change to user mode
+   > 2. change to monitor mode
+   > 3. read from monitor memory
+   > 4. write into monitor memory
+   > 5. fetch on instruction from monitor memory
+   > 6. turn on timer interrupt
+   > 7. turn off timer interrupt
+   >
+   > Ans：有爭議性（作者主觀）
+   >
+   > 1. 恐 2、4、7、**3** （政大、中央）
+   > 2. 交大 2、4、7、**5**
+
+### I/O-Protection
+
+1. **目的**：防止user process直接執行I/O指令操作I/O Device，降低出錯機率及使用複雜度。
+
+2. **作法**：I/O指令設為特權指令。
+
+   將來使用情境：
+
+   ![image-20210714193859548](/Users/h1431532403240/Documents/補習班/作業系統/Imgaes/image-20210714193859548.png)
+
+### Memory Protection
+
+1. **目的**：防止user process任意存取其他processes及kernel所在的memory area。
+
+2. ［假設memory管理採用Contiguous Allocation方法（ch 7）］
+
+   **作法**：OS利用一套register：
+
+   - Base register：記錄Process之起始位置
+   - Limit register：記錄Process之大小
+
+   Process執行時，搭配下列的Checking flow：
+
+   ![image-20210714194325413](./Imgaes/image-20210714194325413-6263010.png)
+
+   此外，Base及Limit register值之set/change需設為特權指令。
+
+### CPU protection
+
+1. **目的**：防止user process長期/無限期佔用CPU而不釋放
+
+2. **作法**：利用Timer（計時器；硬體），OS會規定一個Process使用CPU之Max-Time-Quantum（最大時間配額），當Process取得CPU後，Timer初值即設為Max-Time-Quantum，隨著Process使用CPU之Time增加，Timer值**會逐步遞減**。當Time值=0時，Timer會發出"Time-Out"（expires） interrupt通知OS，OS會強迫此Process放掉CPU。
+
+   > Note：此機制也適用於RR排班之實施（ch4）
+
+   此外，Timer值之set/change需設為特權指令。
+
+   EX：
+   Read the system clock
+   Set the system clock 皆不需特權
+
