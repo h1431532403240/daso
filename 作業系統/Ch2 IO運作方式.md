@@ -209,7 +209,7 @@ Interrupt介紹、Hardware Resouce Protection
 
    將來使用情境：
 
-   ![image-20210714193859548](/Users/h1431532403240/Documents/補習班/作業系統/Imgaes/image-20210714193859548.png)
+   ![image-20210714193859548](./Imgaes/image-20210714193859548.png)
 
 ### Memory Protection
 
