@@ -34,7 +34,6 @@
 
 4. User **e.g. 人、other machines、other system**
 
-   
 
 ## OS之Structure
 
@@ -55,15 +54,13 @@ OS對外介面（Interface）：
 1. User interface（for 人）（or Command interpreter）：
    接收user input Commands，判斷正確與否，若正確可invoke reload system calls，請OS完成該命令請求。
 
-   
-
    - 種類
 
      1. Menu
 
      2. Command line（命令列） **e.g. MS-DOS、UNIX、Linux**
 
-     3. Batch：將一些Commands完成**批次檔**（xxx.bat）
+     3. Batch：將一些Commands完成<u>批次檔</u>（xxx.bat）
 
      4. GUI（Graphic User Interface） **e.g. MacOS、Windows系列**
 
@@ -71,18 +68,13 @@ OS對外介面（Interface）：
 
         Voice辨識（e.g. Siri）
         
-        
-   
+     
     - kernel：The one program running at all Times on the computer is the kernel. It is part of the OS.
-    **即重要服務元件之集合**
+    <u>即重要服務元件之集合</u>
    
     e.g. process Managernent、Thread、Memory、I/O Subsystem protection、security、etc.
    
-    
-   
 2. System Calls：作為Applications and OS kernel介面
-
-
 
 ## OS之目的（角色）
 
@@ -248,46 +240,48 @@ OS對外介面（Interface）：
    
    e.g. e-mail、FTP over Internet
 ## Real-Time（即時） System
-- 可分為兩種subtypes：
-   1. **Hard** real-Time system
+可分為兩種subtypes：
+1. **Hard** real-Time system
 
-      1. Def："This system must ensure the critical tasks complete on time"
-         即必須保證工作可以在規定時間內完成，若超時則失敗。
-      2. 例：軍事防衛系統、核能安控、工廠自動化、etc.
-      3. 系統設計需考量：
-         1. 任何可能影響時間之因素須納入考量。
-            e.g. 處理Algo、signal/data傳輸、系統處理延遲、etc.
-         2. 任何可能造成處理時間過長或不可預期之設備機制宜**少用**或**不用**。
-            例1：Disk少用或不用。 -> 程式燒錄至RAM or 作成晶片 or 載入RAM。（e.g. embeded real-Time system 嵌入式）
-            例2：Virtual memory不予採用。因為page fault處理時間太長。
-         3. 盡量降低kernel之介入干預時間。
-            
-            > Note：很多實際Hard real-Time system是**沒有**OS，如果要有也是特殊設計。
-            
-         4. 一般的OS（e.g. UNIX、Linux、Windows、etc.）不支援Hard real-Time features。
-         5. 不會與Time-Sharing system並存
-      
-   2. **Soft** real-Time system
+   1. Def："This system must ensure the critical tasks complete on time"
+      即必須保證工作可以在規定時間內完成，若超時則失敗。
+   2. 例：軍事防衛系統、核能安控、工廠自動化、etc.
+   3. 系統設計需考量：
+      1. 任何可能影響時間之因素須納入考量。
+         e.g. 處理Algo、signal/data傳輸、系統處理延遲、etc.
+      2. 任何可能造成處理時間過長或不可預期之設備機制宜**少用**或**不用**。
+         例1：Disk少用或不用。 -> 程式燒錄至RAM or 作成晶片 or 載入RAM。（e.g. embeded real-Time system 嵌入式）
+         例2：Virtual memory不予採用。因為page fault處理時間太長。
+      3. 盡量降低kernel之介入干預時間。
+         
+         > Note：很多實際Hard real-Time system是**沒有**OS，如果要有也是特殊設計。
+         
+      4. 一般的OS（e.g. UNIX、Linux、Windows、etc.）不支援Hard real-Time features。
+      5. 不會與Time-Sharing system並存
    
-      1. Def："This system must ensure the real-Time process has the highest priority than the others and retain**（維持住、不可衰退）** this level of priority until it compeled"
-      2. 例：Multimedia system、Virtual Reality、Science simulation、etc.
-      3. 系統設計考量：
-         1. 就CPU scheduling而言（ch4）
-            - 提供Preemptive、priority法則
-            - 不提供"Aging"技術
-         2. 盡量降低kernel之Dispatch latency（ch4）
-         3. 現行的OS皆可支援Soft real-Time features
-         4. Soft real-Time可支持Virtual memory之使用（只要求real-Time process之Pages皆須在memory中直到完工）
-         5. 可與Time-sharing並存
+2. **Soft** real-Time system
+
+   1. Def："This system must ensure the real-Time process has the highest priority than the others and retain**（維持住、不可衰退）** this level of priority until it compeled"
+   2. 例：Multimedia system、Virtual Reality、Science simulation、etc.
+   3. 系統設計考量：
+      1. 就CPU scheduling而言（ch4）
+         - 提供Preemptive、priority法則
+         - 不提供"Aging"技術
+      2. 盡量降低kernel之Dispatch latency（ch4）
+      3. 現行的OS皆可支援Soft real-Time features
+      4. Soft real-Time可支持Virtual memory之使用（只要求real-Time process之Pages皆須在memory中直到完工）
+      5. 可與Time-sharing並存
 
 ## Mobile Computing
 1. 例：Mobile devices
    e.g. Smart phone、PAD
 2. 主要因為mobile device硬體上先天限制，使得在OS及Application設計時有所限制。如下表所示：
 
-| HW之先天限制                                                 | SW之設計限制                                                 |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
-| 1. Slower processor<br />    ( i )power耗能大<br />    ( ii )散熱問題<br />2. memory size小<br />3.Display screen小 | - 運算不宜過度複雜<br />-程式宜精簡<br />-不用的memory space即刻released<br />- 顯示之結果或內容宜有所裁減<br />   e.g. 手機專用web site |
+| HW之先天限制                                                 | SW之設計限制                                          |
+| :----------------------------------------------------------- | :---------------------------------------------------- |
+| 1. Slower processor<br />    ( i )power耗能大<br />    ( ii )散熱問題 | 運算不宜過度複雜<br />程式宜精簡                      |
+| 2. memory size小                                             | 不用的memory space即刻released                        |
+| 3.Display screen小                                           | 顯示之結果或內容宜有所裁減<br />e.g. 手機專用web site |
 
 3. 例：Apple iOS、Android by Google
 
