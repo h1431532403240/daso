@@ -132,7 +132,7 @@ OS對外介面（Interface）：
 1. Def：又叫Multitasking［恐］
 
    It is a logical extention of Multiprogramming system.
-   - CPU switch jobs so freguently. So that user can iteract.（more than multiprogramming）
+   - CPU switch jobs so frequently. So that user can iteract.（more than multiprogramming）
    - So that user can iteract with each job while it is running, creating interactive computing.
    強調：
    1. Response time要短（e.g. <1 sec）
@@ -157,8 +157,8 @@ OS對外介面（Interface）：
 
 2. Benefits：
 
-   1. Increated Throughput
-   2. Increated Reliability
+   1. Increased Throughput
+   2. Increased Reliability
    3. Econorny of Scale
 
    - 分述如下：
@@ -222,8 +222,9 @@ OS對外介面（Interface）：
    1. Throughput增加
    2. Reliability提升
    （以上兩個同Multiprocessors）
-   3. Resource Sharing 因為Cost down
+   3. Resource Sharing 所以Cost down
       理由：它支持client-server Computing environment
+      
       - Server：提供某些服務之machine
          例：File server、mail server、printer server、computing server、DNS（Domain Name Server）
       - Client：不提供任何服務，純粹向Server提出服務請求，再由Server提供服務給client
@@ -231,7 +232,7 @@ OS對外介面（Interface）：
       >    "peer-to-peer" computing environment
       >    - 無法（不用）區分出Client or Server
       >    - machine（or Nodes）即是client也是server
-      >    - Nodes加入peer-to-peer model時，會register its service reguest and provided
+      >    - Nodes加入peer-to-peer model時，會register its service request and provided
       >       - 採central lookup service
       >         or
       >       - 採broad creating方式

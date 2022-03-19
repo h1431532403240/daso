@@ -38,11 +38,11 @@ Interrupt介紹、Hardware Resouce Protection
    8. 當I/O運作完成，I/O-Device controller會發出一個"I/O-Completed" interrupt通知CPU（OS）。
    9. OS收到中斷通知後，（可能）會先暫停目前執行中的Process。
       **e.g. PB exection -> Read status**
-   10. OS會依據Interrupt ID（No）查詢Interrupt vector（表），找出中斷對應的**服務處理程式**（ISR；Interrupt Service Routine）之位址。
+   10. OS會依據Interrupt ID（No）查詢Interrupt vector（表），找出對應的**中斷服務處理程式**（ISR；Interrupt Service Routine）之位址。
    11. Jump to ISR位置，ISR執行。
          **e.g. 將File Data從Controller之Buffer registers搬到memory中**
    12. ISR完成，控制權交回kernel I/O subsystem，通知Process其I/O-Completed及告知結果。
-   13. OS恢復中斷之前Process的執行（e.g. PB exec.）或交由CPU schedulen決定下一個執行之Process
+   13. OS恢復中斷之前Process的執行（e.g. PB exec.）或交由CPU scheduler決定下一個執行之Process
 
 ![image-20210711120841626](./Imgaes/image-20210711120841626.png)
 
@@ -84,7 +84,7 @@ Interrupt介紹、Hardware Resouce Protection
    1. OS收到中斷後，若要立即處理，則會先暫停目前Process執行，且會保存其Status。（e.g. PB被暫停（running -> ready Queue）PB之Status會保存（ch4））
    2. OS會查詢Interrupt Vector based on "Interrupt ID"，確定何種中斷發生，且找出它的ISR位址。
    3. Jump to ISR位址，執行ISR。
-   4. 待ISR完成後，return Contro to kernel。
+   4. 待ISR完成後，return Control to kernel。
    5. kernel resumes（恢復）原先中斷前之Process執行。
       **e.g. PB恢復執行**
    

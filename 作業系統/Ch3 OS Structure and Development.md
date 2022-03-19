@@ -88,7 +88,7 @@
 
      優點：適用於大量參數之情況，操作比較simple。
 
-     缺點：Stack size宜過大，避免overflow［其他版本］
+     缺點：Stack size宜大，避免overflow［其他版本］
 
 ## Policy（政策） and Mechanism（機制）
 
@@ -125,7 +125,7 @@
 
 ### More Complex than simple
 
-例：UNIX than origianl UNIX is limited by hardware functionality.
+例：UNIX than original UNIX is limited by hardware functionality.
 
 - UNIX OS consists of two separable parts
 
@@ -264,7 +264,7 @@ Def：與Microkernel完全相反，所有的kernel services皆Run在kernel mode�
 
 這些變形包括：
 
-1. Paravitualization：:star::star::star:
+1. Paravirtualization：:star::star::star:
    - Present guest with system.
      <u>Similar but not identical</u> to host hardware.
    - Guest must be <u>Modified</u>（修改） to run on paravitualized hardware.
